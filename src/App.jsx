@@ -462,6 +462,15 @@ export default function App() {
   useEffect(() => {
     let isMounted = true;
 
+    // --- FIX: Ensure viewport meta tag exists for mobile responsiveness ---
+    const viewportMeta = document.querySelector('meta[name="viewport"]');
+    if (!viewportMeta) {
+      const meta = document.createElement('meta');
+      meta.name = 'viewport';
+      meta.content = 'width=device-width, initial-scale=1.0';
+      document.head.appendChild(meta);
+    }
+
     const loadTailwind = () => {
       return new Promise((resolve) => {
         if (document.getElementById('tailwind-cdn')) {
@@ -1500,7 +1509,7 @@ export default function App() {
       {/* গ্লোবাল সিএসএস - স্টাইল ফিক্স এবং ডার্ক থিমের জন্য */}
       <style>{`
         html, body, #root {
-          width: 100vw !important;
+          width: 100% !important; /* Changed from 100vw to prevent horizontal scrollbar overflow */
           max-width: 100% !important;
           margin: 0 !important;
           padding: 0 !important;
@@ -1528,7 +1537,7 @@ export default function App() {
       
       {/* টেইলউইন্ড লোড হওয়ার আগে নেটিভ সিএসএস লোডার */}
       {!isAppReady ? (
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100vh', width: '100vw', backgroundColor: theme === 'dark' ? '#0b1d3a' : '#F8F9FA', margin: 0, position: 'fixed', top: 0, left: 0, zIndex: 9999 }}>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100vh', width: '100%', backgroundColor: theme === 'dark' ? '#0b1d3a' : '#F8F9FA', margin: 0, position: 'fixed', top: 0, left: 0, zIndex: 9999 }}>
           <style>{`
             @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
             @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
